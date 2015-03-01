@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    jcenter()
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+dependencies {
+    compile files(
+            'libs/com.kaazing.gateway.client.jar',
+            'libs/com.kaazing.gateway.client.jar',
+            'libs/com.kaazing.gateway.client-javadoc.jar',
+            'libs/com.kaazing.gateway.jms.client.jar')
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    compile 'org.slf4j:slf4j-api:1.5.2'
+    compile 'org.slf4j:slf4j-log4j12:1.5.2'
+    compile 'log4j:log4j:1.2.14'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+mainClassName = 'com.hisham.kaazing.App'

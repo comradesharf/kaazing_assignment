@@ -1,0 +1,7 @@
+.gradle/
+.idea/
+jclient/libs
+jsclient/app/js/libs
+
+*.iml
+log.txt
