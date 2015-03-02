@@ -84,9 +84,9 @@ public class JmsServiceImpl implements JmsService {
 
     @Override public void publishTopics() {
         topicService.getSubscription().ifPresent(subscription -> {
-            ExecutorService scheduler = Executors.newFixedThreadPool(subscription.getNews().size());
+            ExecutorService executor = Executors.newFixedThreadPool(subscription.getNews().size());
             subscription.getNews().forEach(news ->
-                            scheduler.execute(() ->
+                            executor.execute(() ->
                                             sharedSession.ifPresent(session -> {
                                                         String topicName = "/topic/" + news.getTopic();
                                                         try {
