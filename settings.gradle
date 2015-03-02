@@ -1,2 +1,6 @@
 rootProject.name = 'kaazing_assignment'
 
+include 'jclient'
+
+include 'jsclient'
+

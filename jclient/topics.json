@@ -1,0 +1,58 @@
+{
+  "news": [
+    {
+      "topic": "sports",
+      "headlines": [
+        "sport headline 1",
+        "sport headline 2",
+        "sport headline 3",
+        "sport headline 4",
+        "sport headline 5",
+        "sport headline 6",
+        "sport headline 7",
+        "sport headline 8",
+        "sport headline 9",
+        "sport headline 10",
+        "sport headline 11",
+        "sport headline 12",
+        "sport headline 13",
+        "sport headline 14",
+        "sport headline 15",
+        "sport headline 16",
+        "sport headline 17",
+        "sport headline 18",
+        "sport headline 19",
+        "sport headline 20",
+        "sport headline 21",
+        "sport headline 22"
+      ]
+    },
+    {
+      "topic": "world",
+      "headlines": [
+        "world headline 1",
+        "world headline 2",
+        "world headline 3",
+        "world headline 4",
+        "world headline 5",
+        "world headline 6",
+        "world headline 7",
+        "world headline 8",
+        "world headline 9",
+        "world headline 10",
+        "world headline 11",
+        "world headline 12",
+        "world headline 13",
+        "world headline 14",
+        "world headline 15",
+        "world headline 16",
+        "world headline 17",
+        "world headline 18",
+        "world headline 19",
+        "world headline 20",
+        "world headline 21",
+        "world headline 22"
+      ]
+    }
+  ]
+}
