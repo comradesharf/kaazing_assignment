@@ -16,6 +16,14 @@ idea {
     }
 }
 
+task copyLibs(type: Copy) {
+    from "$kaazingHomeDir/lib/client/java"
+    into 'libs'
+}
+
+processResources.dependsOn copyLibs
+
+
 dependencies {
     compile files(
             'libs/com.kaazing.gateway.client.jar',

@@ -3,3 +3,15 @@ version = '1.0'
 repositories {
     jcenter()
 }
+
+task deploy(type: Copy) {
+    from 'app'
+    into "${rootProject.kaazingHomeDir}/web/base/jsclient"
+}
+
+task copyLibs(type: Copy) {
+    from "${rootProject.kaazingHomeDir}/lib/client/javascript"
+    into 'app/js/libs'
+}
+
+deploy.dependsOn copyLibs

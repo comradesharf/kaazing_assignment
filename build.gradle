@@ -7,8 +7,9 @@ repositories {
     jcenter()
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+// Change this to your Kaazing Gateway home directory
+ext {
+    kaazingHomeDir = '/home/xuwam/kaazing-websocket-gateway-jms-4.0.6'
 }
 
 task wrapper(type: Wrapper) {
