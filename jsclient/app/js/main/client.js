@@ -38,6 +38,7 @@ var NewsTicker = React.createClass({
     },
     handleClick: function (topicName) {
         var instance = this;
+        alert("You have subsribed to " + topicName);
 
         if (instance.state.consumer) {
             instance.state.consumer.close(null);
@@ -62,6 +63,7 @@ var NewsTicker = React.createClass({
     handleStopNews: function () {
         if (this.state.consumer) {
             this.state.consumer.close(null);
+            this.setState({headlines: []});
         }
     },
     render: function () {
