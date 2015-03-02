@@ -1,11 +1,11 @@
 package com.hisham.kaazing.jms;
 
-import com.hisham.kaazing.topic.JsonTopicService;
 import com.hisham.kaazing.topic.TopicService;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -25,11 +25,15 @@ public class JmsServiceImpl implements JmsService {
 
     public static final Logger LOGGER = getLogger(JmsServiceImpl.class);
 
-    TopicService topicService = new JsonTopicService();
-
+    private TopicService topicService;
     private Optional<InitialContext> sharedContext;
     private Optional<Connection> sharedConnection;
     private Optional<Session> sharedSession;
+
+    @Inject
+    public JmsServiceImpl(TopicService topicService) {
+        this.topicService = topicService;
+    }
 
     @PostConstruct private void setUp() {
         launchService();
