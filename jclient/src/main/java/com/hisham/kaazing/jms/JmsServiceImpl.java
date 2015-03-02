@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static com.hisham.kaazing.topic.Subscription.News;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -96,7 +96,7 @@ public class JmsServiceImpl implements JmsService {
         try {
             Topic topic = (Topic) sharedContext.get().lookup(topicName);
             MessageProducer producer = session.createProducer(topic);
-            scheduler.scheduleAtFixedRate(() -> sendHeadline(session, producer, news), 0, 1, SECONDS);
+            scheduler.scheduleAtFixedRate(() -> sendHeadline(session, producer, news), 0, 1, MINUTES);
         } catch (NamingException exception) {
             throw new JmsServiceException(
                     "Failed to lookup topic name " + topicName + ": ", exception);
