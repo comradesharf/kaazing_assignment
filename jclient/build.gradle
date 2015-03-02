@@ -20,7 +20,6 @@ dependencies {
     compile files(
             'libs/com.kaazing.gateway.client.jar',
             'libs/com.kaazing.gateway.client.jar',
-            'libs/com.kaazing.gateway.client-javadoc.jar',
             'libs/com.kaazing.gateway.jms.client.jar')
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'
