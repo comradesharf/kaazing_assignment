@@ -13,10 +13,11 @@ import javax.naming.NamingException;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ScheduledExecutorService;
 
+import static com.hisham.kaazing.topic.Subscription.News;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -83,41 +84,39 @@ public class JmsServiceImpl implements JmsService {
     }
 
     @Override public void publishTopics() {
-        topicService.getSubscription().ifPresent(subscription -> {
-            ExecutorService executor = Executors.newFixedThreadPool(subscription.getNews().size());
-            subscription.getNews().forEach(news ->
-                            executor.execute(() ->
-                                            sharedSession.ifPresent(session -> {
-                                                        String topicName = "/topic/" + news.getTopic();
-                                                        try {
-                                                            Topic topic = (Topic) sharedContext.get().lookup(topicName);
-                                                            MessageProducer producer = session.createProducer(topic);
-                                                            String headline = "";
-                                                            while (true) {
-                                                                try {
-                                                                    int index = new Random().nextInt(news.getHeadlines().size());
-                                                                    headline = news.getHeadlines().get(index);
-                                                                    Message message = session.createTextMessage(headline);
-                                                                    producer.send(message);
-                                                                    TimeUnit.MINUTES.sleep(1);
-                                                                } catch (JMSException exception) {
-                                                                    throw new JmsServiceException("Failed to create text message " + headline + ": ", exception);
-                                                                } catch (InterruptedException exception) {
-                                                                    throw new JmsServiceException("Thread interrupted: ", exception);
-                                                                }
-                                                            }
-                                                        } catch (NamingException exception) {
-                                                            throw new JmsServiceException(
-                                                                    "Failed to lookup topic name " + topicName + ": ", exception);
-                                                        } catch (JMSException exception) {
-                                                            throw new JmsServiceException(
-                                                                    "Failed to create producer for topic " + topicName + ": ", exception);
-                                                        }
-                                                    }
-                                            )
-                            )
-            );
-        });
+        topicService.getSubscription().ifPresent(subscription ->
+                sharedSession.ifPresent(session ->
+                        subscription.getNews().forEach(news ->
+                                publishTopic(session, news))));
+    }
+
+    private void publishTopic(Session session, News news) {
+        ScheduledExecutorService scheduler = newSingleThreadScheduledExecutor();
+        String topicName = "/topic/" + news.getTopic();
+        try {
+            Topic topic = (Topic) sharedContext.get().lookup(topicName);
+            MessageProducer producer = session.createProducer(topic);
+            scheduler.scheduleAtFixedRate(() -> sendHeadline(session, producer, news), 0, 1, SECONDS);
+        } catch (NamingException exception) {
+            throw new JmsServiceException(
+                    "Failed to lookup topic name " + topicName + ": ", exception);
+        } catch (JMSException exception) {
+            throw new JmsServiceException(
+                    "Failed to create producer for topic " + topicName + ": ", exception);
+        }
+
+    }
+
+    private void sendHeadline(Session session, MessageProducer producer, News news) {
+        String headline = "";
+        try {
+            int index = new Random().nextInt(news.getHeadlines().size());
+            headline = news.getHeadlines().get(index);
+            Message message = session.createTextMessage(headline);
+            producer.send(message);
+        } catch (JMSException exception) {
+            throw new JmsServiceException("Failed to create text message " + headline + ": ", exception);
+        }
     }
 
     @PreDestroy private void tearDown() {
