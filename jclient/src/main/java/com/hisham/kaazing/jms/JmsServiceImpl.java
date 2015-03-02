@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -98,7 +99,7 @@ public class JmsServiceImpl implements JmsService {
                                                                     headline = news.getHeadlines().get(index);
                                                                     Message message = session.createTextMessage(headline);
                                                                     producer.send(message);
-                                                                    Thread.sleep(1000);
+                                                                    TimeUnit.MINUTES.sleep(1);
                                                                 } catch (JMSException exception) {
                                                                     throw new JmsServiceException("Failed to create text message " + headline + ": ", exception);
                                                                 } catch (InterruptedException exception) {
